@@ -110,3 +110,29 @@ LEVELS= [
         "#######################################################",
     ],
 ]
+VIEW =[ None, None ,None, 6,4 ]
+
+def put(stdscr , y, x, text, attr=0):
+   """Draw text , skip it if it would fall outside the window."""
+   try:
+      stdscr.addstr(y,x,text,attr)
+   except curses.error:
+      pass
+
+def load_level(n):
+    """"Turn level n's text into a grid find the start."""
+    grid =[list(row) for row in LEVELS[n]]
+    start = (1, 1)
+    for y, row in enumerate(grid):
+        for x, ch in enumerate(row):
+           if ch == "■":
+            start =(x ,y)
+            grid[y][x] = " "
+    return grid, start
+def main(stdscr):
+   curses.curs_set(0)
+   curses.start_color()
+   curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
+   curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
+   curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
+
