@@ -160,6 +160,7 @@ def play_level(stdscr , n):
             return None
          if key==curses.KEY_RESIZE:
             curses.resize_term(0,0)
+            continue
 
       top=(rows- maze_h)//2
       left =(cols-maze_w*2)//2
@@ -217,6 +218,37 @@ def play_level(stdscr , n):
          steps +=1
          reveal(seen,grid,px,py,view)
          if grid[py][px]=="E":
+            return steps
+TITLE=[ 
+    "█   █   █   █████ █████",
+    "██ ██  █ █      █ █    ",
+    "█ █ █  █ █   ███  █████",
+    "█   █ █▀▀▀█ █     █    ",
+    "█   █ █   █ █████ █████",]
+BUTTON_W=15 
+
+
+def title_loop(stdscr):
+   while True:
+      stdscr.erase()
+      rows,cols = stdscr.getmaxyx()
+
+
+      lines =[(row, curses.color_pair(4) | curses.A_BOLD) for row in TITLE]
+      lines+= [
+         ("",0),
+         (f"Escape all {len(LEVELS) } mazes!", curses.color_pair(5) |curses.A_BOLD),
+         ("",0),
+         ("Arrows or WASD ...move",0),
+         ("q ......quit,0"),
+         ("", 0)
+         ("Warning !last levels have fog",curses.color_pair(5)),
+         ("",0),
+
+      ]
+
+
+     # top= max(0,(rows -))#
 def show_message(stdscr, lines):
    stdscr.erase()
    rows,cols=stdscr.getmaxyx()
