@@ -182,12 +182,6 @@ def play_level(stdscr , n):
       put(stdscr, top+py, left+px*2 , "■" , curses.color_pair(2) | curses.A_BOLD)
       put(stdscr,top+maze_h +1, left, "Arrows/WASD move r restart q quit")
 
-
-
-
-
-
-     
       key = stdscr.getch()
       dx = dy = 0
       if key==ord("q"):
@@ -225,7 +219,9 @@ TITLE=[
     "█ █ █  █ █   ███  █████",
     "█   █ █▀▀▀█ █     █    ",
     "█   █ █   █ █████ █████",]
-BUTTON_W=15 
+
+
+BUTTON=17
 
 
 def title_loop(stdscr):
@@ -240,15 +236,56 @@ def title_loop(stdscr):
          (f"Escape all {len(LEVELS) } mazes!", curses.color_pair(5) |curses.A_BOLD),
          ("",0),
          ("Arrows or WASD ...move",0),
-         ("q ......quit,0"),
-         ("", 0)
+         ("r... restart level",0),
+         ("q ......quit,",0),
+         ("", 0),
          ("Warning !last levels have fog",curses.color_pair(5)),
          ("",0),
+       ]
 
-      ]
+
+      top= max(0,(rows -(len(lines)+5))//2)
+      for i, (text, attr) in enumerate(lines):
+         put(stdscr, top+ i,max(0,(cols-len(text))//2), text , attr)
 
 
-     # top= max(0,(rows -))#
+      btn_top=top +len(lines)
+      btn_left=max(0, (cols- BUTTON)//2)
+      put(stdscr,btn_top , btn_left, " "* BUTTON,curses.color_pair(3) )
+      put(stdscr,btn_top+1, btn_left, "enter".center(BUTTON),curses.color_pair(3)|curses.A_BOLD)
+      put(stdscr, btn_top + 2, btn_left, " " * BUTTON,curses.color_pair(3))
+      hint="click or press enter/space"
+      put(stdscr,btn_top+4, max(0,(cols -len(hint)) //2), hint)
+
+      key=stdscr.getch()
+      if key in(10, 13,curses.KEY_ENTER, ord(" ")):
+         return True
+      elif key==ord("q"):
+         return False
+      elif key==curses.KEY_MOUSE:
+         try:
+            _, mx ,my , _, bstate=curses.getmouse()
+         except curses.error:
+            continue
+         clicked= bstate & (curses.BUTTON1_CLICKED| curses.BUTTON1_PRESSED|curses.BUTTON1_RELEASED)
+
+         on_button= (btn_top <= my<btn_top+3 and btn_left <= mx< btn_left +  BUTTON)
+         if clicked and on_button:
+            return True
+      elif key == curses.KEY_RESIZE:
+            curses.resize_term(0,0)
+
+
+def show_title(stdscr):
+   """show the front page.Return true to start game , false to quit"""
+   curses.mousemask(curses.ALL_MOUSE_EVENTS)
+   result=title_loop(stdscr)
+   curses.mousemask(0)
+   return result
+
+
+
+
 def show_message(stdscr, lines):
    stdscr.erase()
    rows,cols=stdscr.getmaxyx()
@@ -263,9 +300,14 @@ def main(stdscr):
    curses.curs_set(0)
    curses.start_color()
    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
-   curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
+   curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
    curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
+   curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+   curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLACK)
+   curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_GREEN) 
 
+   if not show_title(stdscr):
+      return
 
    total=0
    for n in range(len(LEVELS)):
