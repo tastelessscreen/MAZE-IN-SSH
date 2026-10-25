@@ -19,20 +19,20 @@ LEVELS= [
     ],
     [
        "###############################",
-        "#@  #           #             #",
-        "### # # ####### # ##### #######",
-        "# # # #     # # # #   #       #",
-        "# # ####### # # # # # ####### #",
-        "# #     #   # # #   #   # #   #",
-        "# ##### # ### # ####### # # ###",
-        "#   #   # #     # #       #   #",
-        "# ### ### # ##### # ######### #",
-        "# #   #   # #     #   #       #",
-        "# # ### ### ##### ### # ##### #",
-        "# #     # #     #     #   #   #",
-        "# ####### ##### ######### # ###",
-        "#                         #  E#",
-        "###############################",
+        "#@#     #     #     #         #",
+        "# # # # # ### # ### ### ### # #",
+        "# # # #   # #     #       # # #",
+        "# ### ##### ##### ####### # ###",
+        "# #   #               #   #   #",
+        "# # ### ########### # # ### # #",
+        "# #   #         #   #   #   # #",
+        "# # # ### # # # ##### ### ### #",
+        "# # #   #   # #       #       #",
+        "# ### # # # # ######### # ### #",
+        "#   # #   # # #       # # #   #",
+        "# # ### # ### ### ### ### # ###",
+        "#       #         #       #  E#",
+        "###############################"
     ],
 
     [
@@ -241,7 +241,7 @@ def title_loop(stdscr):
          ("", 0),
          ("Warning:Last 2 Levels have Fog",curses.color_pair(5)),
          ("",0),
-         ("ENJOYY!",0),
+         ("ENJOYY!:)",0),
          ("",0)
        ]
 
@@ -303,7 +303,7 @@ def main(stdscr):
    curses.start_color()
    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
    curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-   curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLUE)
+   curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
    curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
    curses.init_pair(5, curses.COLOR_YELLOW, curses.COLOR_BLACK)
    curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_GREEN) 
@@ -327,6 +327,8 @@ def main(stdscr):
 
    show_message(stdscr, [
       f" YAYAY YOU ESCAPED ALL {len(LEVELS)} MAZES!",
+      f"you have a heck lot of patience",
+      f"Thanks for playing!!!!",
       f"Total steps:{total}",
       "Press any key to finish",
     ])
