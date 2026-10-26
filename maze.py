@@ -1,6 +1,5 @@
 import curses
 from curses import wrapper
-
 LEVELS= [
 
     [
@@ -112,6 +111,9 @@ LEVELS= [
 ]
 VIEW =[ None, None ,None, 6,4 ]
 
+   
+
+
 def put(stdscr , y, x, text, attr=0):
    """Draw text , skip it if it would fall outside the window."""
    try:
@@ -130,12 +132,17 @@ def load_level(n):
             grid[y][x] = " "
     return grid, start
 
+
+
 def reveal(seen, grid, px, py, view):
    """Remember every square the player can currently see."""
    for y in range(len(grid)):
       for x in range(len(grid[0])):
          if view is None or (x-px)**2 +(y-py)**2 <= view**2:
             seen.add((x,y))
+
+
+
 
 def play_level(stdscr , n):
    """Play one level., or None if the player quit."""
@@ -146,14 +153,15 @@ def play_level(stdscr , n):
    reveal (seen, grid, px, py,view)
    steps=0
 
+
    while True:
       stdscr.erase()
       rows , cols=stdscr.getmaxyx()
 
       need_cols, need_rows= maze_w*2+1 , maze_h+4 
-      if rows <need_rows or cols<need_cols:
-         put(stdscr,0,0,"window small!")
-         put(stdscr, 1, 0,f"need {need_cols} columns x {need_rows} rows.")
+      if rows < need_rows or cols < need_cols:
+         put(stdscr, 0 , 0," window small!")
+         put(stdscr, 1, 0 , f"need {need_cols} columns x {need_rows} rows.")
          put(stdscr,2,0, "maxmize the window , then press a key. (q=quit)")
          key=stdscr.getch()
          if key==ord("q"):
@@ -165,6 +173,9 @@ def play_level(stdscr , n):
       top=(rows- maze_h)//2
       left =(cols-maze_w*2)//2
 
+
+
+ 
       title= f"Level {n+1} of {len(LEVELS)} steps:{steps}"
       if view is not None:
          title += " ( FOG: you can only see nearby)"
